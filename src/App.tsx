@@ -1,45 +1,37 @@
 import { useEffect, useState, useCallback } from "react";
 import "./styles/App.css";
-import GameCard from "./components/GameCard/GameCard";
+import GameList from "./components/GameList/GameList";
 import { Game } from "./interfaces/interfaces";
+import { fetchGamesData, fetchNextPageGames } from "./utils/api";
+import { filterUnwantedGames, getCompleteGames } from "./utils/filters";
 
 function App() {
-  const [gamesData, setGamesData] = useState<Game[]>([]);
+  const [filteredData, setFilteredData] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
   const [ordering, setOrdering] = useState<string>("added");
   const [error, setError] = useState<string | null>(null);
 
   const orderingParam = ordering === "name" ? ordering : `-${ordering}`;
 
-  const fetchGamesData = useCallback(async () => {
+  const fetchGames = useCallback(async () => {
     setLoading(true);
     try {
-      const response = await fetch(
-        `/api/games?key=${import.meta.env.VITE_RAWG_API_KEY}&ordering=${orderingParam}&metacritic=80,100`
-      );
+      const data = await fetchGamesData(orderingParam);
+      const prefetchedGames = await fetchNextPageGames(data.next);
+      const filteredGames = filterUnwantedGames(data.results);
+      const completeGames = getCompleteGames(filteredGames, prefetchedGames);
 
-      if (!response.ok) {
-        throw new Error("Network response was not ok");
-      }
-
-      const data = await response.json();
-
-      setGamesData(data.results);
-    } catch (e) {
-      if (e instanceof Error) {
-        console.log(e);
-        setError(e.message);
-      } else {
-        setError("Unexpected error");
-      }
+      setFilteredData(completeGames);
+    } catch (error) {
+      setError(error instanceof Error ? error.message : "Unexpected error");
     } finally {
       setLoading(false);
     }
   }, [orderingParam]);
 
   useEffect(() => {
-    fetchGamesData();
-  }, [fetchGamesData]);
+    fetchGames();
+  }, [fetchGames]);
 
   return (
     <>
@@ -63,15 +55,7 @@ function App() {
         </select>
       </label>
 
-      {loading ? (
-        <p>Loading games...</p>
-      ) : (
-        <div className="grid grid-cols-4 gap-4">
-          {gamesData.map((game: Game) => {
-            return <GameCard key={game.id} gameData={game} />;
-          })}
-        </div>
-      )}
+      <GameList games={filteredData} loading={loading} error={error} />
     </>
   );
 }
