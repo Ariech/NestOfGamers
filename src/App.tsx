@@ -3,10 +3,10 @@ import "./styles/App.css";
 import GameList from "./components/GameList/GameList";
 import { Game } from "./interfaces/interfaces";
 import { fetchGamesData, fetchNextPageGames } from "./utils/api";
-import { filterUnwantedGames, getCompleteGames } from "./utils/filters";
 
 function App() {
-  const [filteredData, setFilteredData] = useState<Game[]>([]);
+  const [gamesData, setGamesData] = useState<Game[]>([]);
+  const [nextPageGamesData, setNextPageGamesData] = useState<Game[]>([]);
   const [loading, setLoading] = useState(true);
   const [ordering, setOrdering] = useState<string>("added");
   const [error, setError] = useState<string | null>(null);
@@ -18,10 +18,9 @@ function App() {
     try {
       const data = await fetchGamesData(orderingParam);
       const prefetchedGames = await fetchNextPageGames(data.next);
-      const filteredGames = filterUnwantedGames(data.results);
-      const completeGames = getCompleteGames(filteredGames, prefetchedGames);
 
-      setFilteredData(completeGames);
+      setGamesData(data);
+      setNextPageGamesData(prefetchedGames);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unexpected error");
     } finally {
@@ -55,7 +54,7 @@ function App() {
         </select>
       </label>
 
-      <GameList games={filteredData} loading={loading} error={error} />
+      <GameList games={gamesData} loading={loading} error={error} />
     </>
   );
 }

@@ -7,7 +7,9 @@ export const fetchGamesData = async (orderingParam: string) => {
     throw new Error("Network response was not ok");
   }
 
-  return response.json();
+  const data = await response.json();
+
+  return data.results;
 };
 
 export const fetchNextPageGames = async (nextPageUrl: string | null) => {
