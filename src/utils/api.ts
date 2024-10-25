@@ -1,6 +1,9 @@
-export const fetchGamesData = async (orderingParam: string) => {
+export const fetchGamesData = async (
+  orderingParam: string,
+  pageNumber: number
+) => {
   const response = await fetch(
-    `/api/games?key=${import.meta.env.VITE_RAWG_API_KEY}&ordering=${orderingParam}&metacritic=80,100`
+    `/api/games?key=${import.meta.env.VITE_RAWG_API_KEY}&ordering=${orderingParam}&metacritic=80,100&page=${pageNumber}`
   );
 
   if (!response.ok) {

@@ -3,10 +3,12 @@ import "./styles/App.css";
 import GameList from "./components/GameList/GameList";
 import { Game } from "./interfaces/interfaces";
 import { fetchGamesData, fetchNextPageGames } from "./utils/api";
+import { Pagination } from "./components/Pagination/Pagination";
 
 function App() {
   const [gamesData, setGamesData] = useState<Game[]>([]);
   const [nextPageGamesData, setNextPageGamesData] = useState<Game[]>([]);
+  const [currentPage, setCurrentPage] = useState<number>(1);
   const [loading, setLoading] = useState(true);
   const [ordering, setOrdering] = useState<string>("added");
   const [error, setError] = useState<string | null>(null);
@@ -16,21 +18,25 @@ function App() {
   const fetchGames = useCallback(async () => {
     setLoading(true);
     try {
-      const data = await fetchGamesData(orderingParam);
-      const prefetchedGames = await fetchNextPageGames(data.next);
+      const data = await fetchGamesData(orderingParam, currentPage);
+      // const prefetchedGames = await fetchNextPageGames(data.next);
 
       setGamesData(data);
-      setNextPageGamesData(prefetchedGames);
+      // setNextPageGamesData(prefetchedGames);
     } catch (error) {
       setError(error instanceof Error ? error.message : "Unexpected error");
     } finally {
       setLoading(false);
     }
-  }, [orderingParam]);
+  }, [orderingParam, currentPage]);
 
   useEffect(() => {
     fetchGames();
   }, [fetchGames]);
+
+  useEffect(() => {
+    setCurrentPage(1);
+  }, [orderingParam]);
 
   return (
     <>
@@ -55,6 +61,7 @@ function App() {
       </label>
 
       <GameList games={gamesData} loading={loading} error={error} />
+      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
     </>
   );
 }
