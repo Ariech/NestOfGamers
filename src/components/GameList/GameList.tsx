@@ -4,7 +4,7 @@ import { Game } from "../../interfaces/interfaces";
 interface GameListProps {
   games: Game[];
   loading: boolean;
-  error: string | null;
+  error: Error | null;
 }
 
 const GameList = ({ games, loading, error }: GameListProps) => {
@@ -13,7 +13,7 @@ const GameList = ({ games, loading, error }: GameListProps) => {
   }
 
   if (error) {
-    return <p className="text-red-500">Error: {error}</p>;
+    return <p className="text-red-500">Error: {error.message}</p>;
   }
 
   return (

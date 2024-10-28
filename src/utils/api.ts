@@ -12,16 +12,5 @@ export const fetchGamesData = async (
 
   const data = await response.json();
 
-  return data.results;
-};
-
-export const fetchNextPageGames = async (nextPageUrl: string | null) => {
-  if (!nextPageUrl) return [];
-  const nextPageResponse = await fetch(nextPageUrl);
-
-  if (nextPageResponse.ok) {
-    const nextPageData = await nextPageResponse.json();
-    return nextPageData.results;
-  }
-  return [];
+  return data;
 };
