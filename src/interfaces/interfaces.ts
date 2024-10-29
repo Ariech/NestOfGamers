@@ -3,3 +3,8 @@ export interface Game {
   name: string;
   background_image: string;
 }
+
+export interface GamesData {
+  results: Game[];
+  next: string | null;
+}

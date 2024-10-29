@@ -4,16 +4,30 @@ import "./styles/App.css";
 import GameList from "./components/GameList/GameList";
 import { Pagination } from "./components/Pagination/Pagination";
 import { useGames } from "./hooks/useGames";
+import { useDebounce } from "./hooks/useDebounce";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [ordering, setOrdering] = useState<string>("added");
+  const [searchValue, setSearchValue] = useState<string>("");
 
-  const { data: gamesData, isLoading, error } = useGames(ordering, currentPage);
+  const debouncedSearchValue = useDebounce(searchValue, 300);
+
+  const {
+    data: gamesData,
+    isLoading,
+    error,
+  } = useGames(ordering, currentPage, debouncedSearchValue);
 
   const handleOrderingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setOrdering(e.target.value);
     setCurrentPage(1);
+  };
+
+  const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    setSearchValue(e.target.value);
+    setCurrentPage(1);
+    setOrdering("added");
   };
 
   return (
@@ -22,6 +36,13 @@ function App() {
       <h1 className="text-3xl font-bold underline text-red-500">
         Hello world!
       </h1>
+      <input
+        type="text"
+        value={searchValue}
+        onChange={handleSearchChange}
+        placeholder="Search game"
+        name="searchValue"
+      />
 
       <label>
         Order by:{" "}
@@ -43,7 +64,11 @@ function App() {
         loading={isLoading}
         error={error}
       />
-      <Pagination currentPage={currentPage} setCurrentPage={setCurrentPage} />
+      <Pagination
+        currentPage={currentPage}
+        setCurrentPage={setCurrentPage}
+        gamesData={gamesData}
+      />
     </>
   );
 }

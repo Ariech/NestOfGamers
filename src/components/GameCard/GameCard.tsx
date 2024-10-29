@@ -12,6 +12,7 @@ function GameCard({ gameData }: GameCardProps) {
         className="image"
         src={gameData.background_image}
         alt={gameData.name}
+        loading="lazy"
       />
     </div>
   );
