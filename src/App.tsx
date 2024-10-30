@@ -22,6 +22,7 @@ function App() {
   const handleOrderingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setOrdering(e.target.value);
     setCurrentPage(1);
+    setSearchValue("");
   };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {

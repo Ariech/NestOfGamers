@@ -1,3 +1,4 @@
+import { useEffect } from "react";
 import { GamesData } from "../../interfaces/interfaces";
 
 interface PaginationProps {
@@ -12,6 +13,10 @@ export const Pagination = ({
   gamesData,
 }: PaginationProps) => {
   const hasNextPage = gamesData && gamesData.next;
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, [currentPage]);
 
   return (
     <>
