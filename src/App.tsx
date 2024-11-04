@@ -5,6 +5,7 @@ import GameList from "./components/GameList/GameList";
 import { Pagination } from "./components/Pagination/Pagination";
 import { useGames } from "./hooks/useGames";
 import { useDebounce } from "./hooks/useDebounce";
+import { Select } from "./components/Select/Select";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -18,6 +19,14 @@ function App() {
     isLoading,
     error,
   } = useGames(ordering, currentPage, debouncedSearchValue);
+
+  const orderingOptions = [
+    { label: "Added", value: "added" },
+    { label: "Name", value: "name" },
+    { label: "Released", value: "released" },
+    { label: "Rating", value: "rating" },
+    { label: "Metacritic", value: "metacritic" },
+  ];
 
   const handleOrderingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
     setOrdering(e.target.value);
@@ -45,20 +54,12 @@ function App() {
         name="searchValue"
       />
 
-      <label>
-        Order by:{" "}
-        <select
-          name="selectedOrdering"
-          value={ordering}
-          onChange={handleOrderingChange}
-        >
-          <option value="added">Added</option>
-          <option value="name">Name</option>
-          <option value="released">Released</option>
-          <option value="rating">Rating</option>
-          <option value="metacritic">Metacritic</option>
-        </select>
-      </label>
+      <Select
+        label={"Order by"}
+        value={ordering}
+        onChange={handleOrderingChange}
+        options={orderingOptions}
+      />
 
       <GameList
         games={gamesData ? gamesData.results : []}
