@@ -11,6 +11,7 @@ import { Input } from "./components/Input/Input";
 function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [ordering, setOrdering] = useState<string>("added");
+  const [genre, setGenre] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
 
   const debouncedSearchValue = useDebounce(searchValue, 300);
@@ -19,7 +20,7 @@ function App() {
     data: gamesData,
     isLoading,
     error,
-  } = useGames(ordering, currentPage, debouncedSearchValue);
+  } = useGames(ordering, currentPage, debouncedSearchValue, genre);
 
   const orderingOptions = [
     { label: "Added", value: "added" },
@@ -29,11 +30,38 @@ function App() {
     { label: "Metacritic", value: "metacritic" },
   ];
 
-  const handleOrderingChange = (e: React.ChangeEvent<HTMLSelectElement>) => {
-    setOrdering(e.target.value);
-    setCurrentPage(1);
-    setSearchValue("");
-  };
+  const genreOptions = [
+    { label: "None", value: "" },
+    { label: "Action", value: "action" },
+    { label: "Indie", value: "indie" },
+    { label: "Adventure", value: "adventure" },
+    { label: "RPG", value: "rpg" },
+    { label: "Strategy", value: "strategy" },
+    { label: "Shooter", value: "shooter" },
+    { label: "Casual", value: "casual" },
+    { label: "Simulation", value: "simulation" },
+    { label: "Puzzle", value: "puzzle" },
+    { label: "Arcade", value: "arcade" },
+    { label: "Platformer", value: "platformer" },
+    { label: "Racing", value: "racing" },
+    { label: "Massively Multiplayer", value: "massively-multiplayer" },
+    { label: "Sports", value: "sports" },
+    { label: "Fighting", value: "fighting" },
+    { label: "Family", value: "family" },
+    { label: "Board Games", value: "board-games" },
+    { label: "Educational", value: "educational" },
+    { label: "Card", value: "card" },
+  ];
+
+  const handleSelectChange =
+    (setter: React.Dispatch<React.SetStateAction<any>>) =>
+    (e: React.ChangeEvent<HTMLSelectElement>) => {
+      setter(e.target.value);
+      setCurrentPage(1);
+      if (!searchValue) {
+        setSearchValue("");
+      }
+    };
 
   const handleSearchChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     setSearchValue(e.target.value);
@@ -60,9 +88,17 @@ function App() {
           <Select
             label={"Order by"}
             value={ordering}
-            onChange={handleOrderingChange}
+            onChange={handleSelectChange(setOrdering)}
             options={orderingOptions}
             name={"selectedOrdering"}
+          />
+
+          <Select
+            label={"Genre"}
+            value={genre}
+            onChange={handleSelectChange(setGenre)}
+            options={genreOptions}
+            name={"selectedGenre"}
           />
 
           <GameList
