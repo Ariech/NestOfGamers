@@ -6,6 +6,7 @@ import { Pagination } from "./components/Pagination/Pagination";
 import { useGames } from "./hooks/useGames";
 import { useDebounce } from "./hooks/useDebounce";
 import { Select } from "./components/Select/Select";
+import { Input } from "./components/Input/Input";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -41,37 +42,42 @@ function App() {
   };
 
   return (
-    <>
-      {error && <p className="text-red-500">Error: {error.message}</p>}
-      <h1 className="text-3xl font-bold underline text-red-500">
-        Hello world!
-      </h1>
-      <input
-        type="text"
-        value={searchValue}
-        onChange={handleSearchChange}
-        placeholder="Search game"
-        name="searchValue"
-      />
+    <div
+      className={`min-h-dvh text-textPrimary ${error ? "flex items-center justify-center" : ""}`}
+    >
+      {error ? (
+        <p className="text-red-500">Error: {error.message}</p>
+      ) : (
+        <>
+          <Input
+            type={"text"}
+            value={searchValue}
+            onChange={handleSearchChange}
+            placeholder={"Search game"}
+            name={"searchValue"}
+          />
 
-      <Select
-        label={"Order by"}
-        value={ordering}
-        onChange={handleOrderingChange}
-        options={orderingOptions}
-      />
+          <Select
+            label={"Order by"}
+            value={ordering}
+            onChange={handleOrderingChange}
+            options={orderingOptions}
+            name={"selectedOrdering"}
+          />
 
-      <GameList
-        games={gamesData ? gamesData.results : []}
-        loading={isLoading}
-        error={error}
-      />
-      <Pagination
-        currentPage={currentPage}
-        setCurrentPage={setCurrentPage}
-        gamesData={gamesData}
-      />
-    </>
+          <GameList
+            games={gamesData ? gamesData.results : []}
+            loading={isLoading}
+            error={error}
+          />
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            gamesData={gamesData}
+          />
+        </>
+      )}
+    </div>
   );
 }
 
