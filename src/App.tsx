@@ -7,6 +7,8 @@ import { useGames } from "./hooks/useGames";
 import { useDebounce } from "./hooks/useDebounce";
 import { Select } from "./components/Select/Select";
 import { Input } from "./components/Input/Input";
+import { useFavorites } from "./hooks/useFavorites";
+// import FavoritesList from "./components/FavoritesList/FavoritesList";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -15,6 +17,7 @@ function App() {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const debouncedSearchValue = useDebounce(searchValue, 300);
+  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
 
   const {
     data: gamesData,
@@ -105,12 +108,19 @@ function App() {
             games={gamesData ? gamesData.results : []}
             loading={isLoading}
             error={error}
+            favorites={favorites}
+            onAddToFavorites={addToFavorites}
+            onRemoveFromFavorites={removeFromFavorites}
           />
           <Pagination
             currentPage={currentPage}
             setCurrentPage={setCurrentPage}
             gamesData={gamesData}
           />
+          {/* <FavoritesList
+            favorites={favorites}
+            onRemoveFromFavorites={removeFromFavorites}
+          /> */}
         </>
       )}
     </div>

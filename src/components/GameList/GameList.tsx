@@ -5,9 +5,21 @@ interface GameListProps {
   games: Game[];
   loading: boolean;
   error: Error | null;
+  favorites: Game[];
+  // eslint-disable-next-line no-unused-vars
+  onAddToFavorites: (game: Game) => void;
+  // eslint-disable-next-line no-unused-vars
+  onRemoveFromFavorites: (gameId: number) => void;
 }
 
-const GameList = ({ games, loading, error }: GameListProps) => {
+const GameList = ({
+  games,
+  loading,
+  error,
+  favorites,
+  onAddToFavorites,
+  onRemoveFromFavorites,
+}: GameListProps) => {
   if (loading) {
     return <p>Loading games...</p>;
   }
@@ -19,7 +31,13 @@ const GameList = ({ games, loading, error }: GameListProps) => {
   return (
     <div className="grid grid-cols-4 gap-16 mx-16 mt-16">
       {games.map((game) => (
-        <GameCard key={game.id} gameData={game} />
+        <GameCard
+          key={game.id}
+          gameData={game}
+          isFavorite={favorites.some((favGame) => favGame.id === game.id)}
+          onAddToFavorites={onAddToFavorites}
+          onRemoveFromFavorites={onRemoveFromFavorites}
+        />
       ))}
     </div>
   );
