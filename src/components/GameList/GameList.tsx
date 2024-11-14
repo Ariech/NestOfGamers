@@ -29,7 +29,7 @@ const GameList = ({
   }
 
   return (
-    <div className="grid grid-cols-4 gap-16 mx-16 mt-16">
+    <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-16 mx-16 mt-16 ">
       {games.map((game) => (
         <GameCard
           key={game.id}
