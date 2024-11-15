@@ -3,7 +3,6 @@ import { Game } from "../../interfaces/interfaces";
 
 interface GameListProps {
   games: Game[];
-  loading: boolean;
   error: Error | null;
   favorites: Game[];
   // eslint-disable-next-line no-unused-vars
@@ -14,22 +13,17 @@ interface GameListProps {
 
 const GameList = ({
   games,
-  loading,
   error,
   favorites,
   onAddToFavorites,
   onRemoveFromFavorites,
 }: GameListProps) => {
-  if (loading) {
-    return <p>Loading games...</p>;
-  }
-
   if (error) {
     return <p className="text-red-500">Error: {error.message}</p>;
   }
 
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-16 mx-16 mt-16 ">
+    <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-16 mx-16 my-8 ">
       {games.map((game) => (
         <GameCard
           key={game.id}

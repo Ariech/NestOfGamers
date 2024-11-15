@@ -72,6 +72,14 @@ function App() {
     setOrdering("added");
   };
 
+  if (isLoading) {
+    return (
+      <div className="flex items-center justify-center min-h-screen">
+        <p className="text-textPrimary">Loading games...</p>
+      </div>
+    );
+  }
+
   return (
     <div
       className={`min-h-dvh text-textPrimary ${error ? "flex items-center justify-center" : ""}`}
@@ -103,10 +111,8 @@ function App() {
             options={genreOptions}
             name={"selectedGenre"}
           />
-
           <GameList
             games={gamesData ? gamesData.results : []}
-            loading={isLoading}
             error={error}
             favorites={favorites}
             onAddToFavorites={addToFavorites}
