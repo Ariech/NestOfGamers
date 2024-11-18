@@ -19,10 +19,10 @@ export const Pagination = ({
     window.scrollTo(0, 0);
   }, [currentPage]);
 
-  if (!hasPreviousPage && !hasNextPage) {
+  if (!hasPreviousPage && !hasNextPage && gamesData.results.length === 0) {
     return (
-      <div className="flex justify-center items-center mt-8">
-        <p className="text-xl font-bold text-textPrimary">No games found</p>
+      <div className="flex justify-center items-center mt-24">
+        <p className="text-4xl font-bold text-textPrimary">No games found</p>
       </div>
     );
   }

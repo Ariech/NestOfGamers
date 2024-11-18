@@ -1,23 +1,15 @@
 import GameCard from "../GameCard/GameCard";
 import { Game } from "../../interfaces/interfaces";
+import { useFavoritesContext } from "../../hooks/useFavoritesContext";
 
 interface GameListProps {
   games: Game[];
   error: Error | null;
-  favorites: Game[];
-  // eslint-disable-next-line no-unused-vars
-  onAddToFavorites: (game: Game) => void;
-  // eslint-disable-next-line no-unused-vars
-  onRemoveFromFavorites: (gameId: number) => void;
 }
 
-const GameList = ({
-  games,
-  error,
-  favorites,
-  onAddToFavorites,
-  onRemoveFromFavorites,
-}: GameListProps) => {
+const GameList = ({ games, error }: GameListProps) => {
+  const { favorites } = useFavoritesContext();
+
   if (error) {
     return <p className="text-red-500">Error: {error.message}</p>;
   }
@@ -29,8 +21,6 @@ const GameList = ({
           key={game.id}
           gameData={game}
           isFavorite={favorites.some((favGame) => favGame.id === game.id)}
-          onAddToFavorites={onAddToFavorites}
-          onRemoveFromFavorites={onRemoveFromFavorites}
         />
       ))}
     </div>
