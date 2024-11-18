@@ -17,9 +17,9 @@ const testPageChange = async (initialPage: number, expectedPage: number) => {
   );
 
   if (expectedPage > initialPage) {
-    await user.click(screen.getByRole("button", { name: "Next" }));
+    await user.click(screen.getByRole("button", { name: /Next Page/i }));
   } else {
-    await user.click(screen.getByRole("button", { name: "Previous" }));
+    await user.click(screen.getByRole("button", { name: /Previous Page/i }));
   }
 
   rerender(
@@ -44,7 +44,7 @@ describe("Pagination", () => {
         gamesData={{ next: null, results: [] }}
       />
     );
-    expect(screen.getByText(/Next/i)).toBeDisabled();
+    expect(screen.queryByRole("button", { name: /Next Page/i })).toBeNull();
   });
 
   it("doesn't disable next button when there is a next page", () => {
@@ -55,7 +55,7 @@ describe("Pagination", () => {
         gamesData={{ next: "/api/games?page=2", results: [] }}
       />
     );
-    expect(screen.getByText(/Next/i)).toBeEnabled();
+    expect(screen.getByRole("button", { name: /Next Page/i })).toBeEnabled();
   });
 
   it("disables previous button when there is no previous page", () => {
@@ -66,7 +66,7 @@ describe("Pagination", () => {
         gamesData={{ next: null, results: [] }}
       />
     );
-    expect(screen.getByText(/Previous/i)).toBeDisabled();
+    expect(screen.queryByRole("button", { name: /Previous Page/i })).toBeNull();
   });
 
   it("doesn't disable previous button when there is a previous page", () => {
@@ -77,7 +77,9 @@ describe("Pagination", () => {
         gamesData={{ next: null, results: [] }}
       />
     );
-    expect(screen.getByText(/Previous/i)).toBeEnabled();
+    expect(
+      screen.getByRole("button", { name: /Previous Page/i })
+    ).toBeEnabled();
   });
 
   it("calls setCurrentPage correctly when Previous button is clicked", async () => {
