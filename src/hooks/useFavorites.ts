@@ -1,11 +1,10 @@
-// hooks/useFavorites.ts
 import { useEffect, useState } from "react";
 import { Game } from "../interfaces/interfaces";
 import {
   getFavoriteGames,
   saveFavoriteGame,
   removeFavoriteGame,
-} from "../utils/localStorage";
+} from "../utils/localStorageFavorites";
 
 export const useFavorites = () => {
   const [favorites, setFavorites] = useState<Game[]>([]);

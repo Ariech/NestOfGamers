@@ -7,8 +7,9 @@ import { useGames } from "./hooks/useGames";
 import { useDebounce } from "./hooks/useDebounce";
 import { Select } from "./components/Select/Select";
 import { Input } from "./components/Input/Input";
-import { useFavorites } from "./hooks/useFavorites";
-// import FavoritesList from "./components/FavoritesList/FavoritesList";
+import { FavoritesProvider } from "./contexts/favoritesContext";
+import FavoritesList from "./components/FavoritesList/FavoritesList";
+import { orderingOptions, genreOptions } from "./utils/options";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
@@ -17,44 +18,12 @@ function App() {
   const [searchValue, setSearchValue] = useState<string>("");
 
   const debouncedSearchValue = useDebounce(searchValue, 300);
-  const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
 
   const {
     data: gamesData,
     isLoading,
     error,
   } = useGames(ordering, currentPage, debouncedSearchValue, genre);
-
-  const orderingOptions = [
-    { label: "Added", value: "added" },
-    { label: "Name", value: "name" },
-    { label: "Released", value: "released" },
-    { label: "Rating", value: "rating" },
-    { label: "Metacritic", value: "metacritic" },
-  ];
-
-  const genreOptions = [
-    { label: "None", value: "" },
-    { label: "Action", value: "action" },
-    { label: "Indie", value: "indie" },
-    { label: "Adventure", value: "adventure" },
-    { label: "RPG", value: "rpg" },
-    { label: "Strategy", value: "strategy" },
-    { label: "Shooter", value: "shooter" },
-    { label: "Casual", value: "casual" },
-    { label: "Simulation", value: "simulation" },
-    { label: "Puzzle", value: "puzzle" },
-    { label: "Arcade", value: "arcade" },
-    { label: "Platformer", value: "platformer" },
-    { label: "Racing", value: "racing" },
-    { label: "Massively Multiplayer", value: "massively-multiplayer" },
-    { label: "Sports", value: "sports" },
-    { label: "Fighting", value: "fighting" },
-    { label: "Family", value: "family" },
-    { label: "Board Games", value: "board-games" },
-    { label: "Educational", value: "educational" },
-    { label: "Card", value: "card" },
-  ];
 
   const handleSelectChange =
     (setter: React.Dispatch<React.SetStateAction<any>>) =>
@@ -75,61 +44,57 @@ function App() {
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
-        <p className="text-textPrimary">Loading games...</p>
+        <p className="text-textPrimary text-4xl font-bold">Loading games...</p>
       </div>
     );
   }
 
   return (
-    <div
-      className={`min-h-dvh text-textPrimary ${error ? "flex items-center justify-center" : ""}`}
-    >
-      {error ? (
-        <p className="text-red-500">Error: {error.message}</p>
-      ) : (
-        <>
-          <Input
-            type={"text"}
-            value={searchValue}
-            onChange={handleSearchChange}
-            placeholder={"Search game"}
-            name={"searchValue"}
-          />
+    <FavoritesProvider>
+      <div
+        className={`min-h-dvh text-textPrimary ${error ? "flex items-center justify-center" : ""}`}
+      >
+        {error ? (
+          <p className="text-red-500">Error: {error.message}</p>
+        ) : (
+          <>
+            <Input
+              type={"text"}
+              value={searchValue}
+              onChange={handleSearchChange}
+              placeholder={"Search game"}
+              name={"searchValue"}
+            />
 
-          <Select
-            label={"Order by"}
-            value={ordering}
-            onChange={handleSelectChange(setOrdering)}
-            options={orderingOptions}
-            name={"selectedOrdering"}
-          />
+            <Select
+              label={"Order by"}
+              value={ordering}
+              onChange={handleSelectChange(setOrdering)}
+              options={orderingOptions}
+              name={"selectedOrdering"}
+            />
 
-          <Select
-            label={"Genre"}
-            value={genre}
-            onChange={handleSelectChange(setGenre)}
-            options={genreOptions}
-            name={"selectedGenre"}
-          />
-          <GameList
-            games={gamesData ? gamesData.results : []}
-            error={error}
-            favorites={favorites}
-            onAddToFavorites={addToFavorites}
-            onRemoveFromFavorites={removeFromFavorites}
-          />
-          <Pagination
-            currentPage={currentPage}
-            setCurrentPage={setCurrentPage}
-            gamesData={gamesData}
-          />
-          {/* <FavoritesList
-            favorites={favorites}
-            onRemoveFromFavorites={removeFromFavorites}
-          /> */}
-        </>
-      )}
-    </div>
+            <Select
+              label={"Genre"}
+              value={genre}
+              onChange={handleSelectChange(setGenre)}
+              options={genreOptions}
+              name={"selectedGenre"}
+            />
+            <GameList
+              games={gamesData ? gamesData.results : []}
+              error={error}
+            />
+            <Pagination
+              currentPage={currentPage}
+              setCurrentPage={setCurrentPage}
+              gamesData={gamesData}
+            />
+            <FavoritesList />
+          </>
+        )}
+      </div>
+    </FavoritesProvider>
   );
 }
 

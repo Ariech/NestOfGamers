@@ -1,20 +1,14 @@
 import { Game } from "../../interfaces/interfaces";
+import { useFavoritesContext } from "../../hooks/useFavoritesContext";
 
 interface GameCardProps {
   gameData: Game;
   isFavorite: boolean;
-  // eslint-disable-next-line no-unused-vars
-  onAddToFavorites: (game: Game) => void;
-  // eslint-disable-next-line no-unused-vars
-  onRemoveFromFavorites: (gameId: number) => void;
 }
 
-function GameCard({
-  gameData,
-  isFavorite,
-  onAddToFavorites,
-  onRemoveFromFavorites,
-}: GameCardProps) {
+function GameCard({ gameData, isFavorite }: GameCardProps) {
+  const { addToFavorites, removeFromFavorites } = useFavoritesContext();
+
   return (
     <div className="flex flex-col items-center bg-cardBg rounded-lg shadow-custom-card hover:shadow-custom-card-hover hover:scale-105 transition-transform duration-300 justify-between">
       <div className="w-full relative">
@@ -31,14 +25,14 @@ function GameCard({
         </p>
         {isFavorite ? (
           <button
-            onClick={() => onRemoveFromFavorites(gameData.id)}
+            onClick={() => removeFromFavorites(gameData.id)}
             className="mt-2 bg-red-500 text-white px-4 py-2 rounded-lg font-medium hover:bg-red-700 transition-colors duration-200"
           >
             Remove from Favorites
           </button>
         ) : (
           <button
-            onClick={() => onAddToFavorites(gameData)}
+            onClick={() => addToFavorites(gameData)}
             className="mt-2 bg-shadowDark text-accentSilver px-4 py-2 rounded-lg font-medium hover:bg-highlight transition-colors duration-200"
           >
             Add to Favorites
