@@ -1,11 +1,5 @@
 import { useEffect } from "react";
-import { GamesData } from "../../interfaces/interfaces";
-
-interface PaginationProps {
-  currentPage: number;
-  setCurrentPage: any;
-  gamesData: GamesData;
-}
+import { PaginationProps } from "../../interfaces/interfaces";
 
 export const Pagination = ({
   currentPage,

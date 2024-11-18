@@ -1,10 +1,5 @@
-import { Game } from "../../interfaces/interfaces";
 import { useFavoritesContext } from "../../hooks/useFavoritesContext";
-
-interface GameCardProps {
-  gameData: Game;
-  isFavorite: boolean;
-}
+import { GameCardProps } from "../../interfaces/interfaces";
 
 function GameCard({ gameData, isFavorite }: GameCardProps) {
   const { addToFavorites, removeFromFavorites } = useFavoritesContext();

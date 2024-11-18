@@ -1,11 +1,6 @@
 import GameCard from "../GameCard/GameCard";
-import { Game } from "../../interfaces/interfaces";
 import { useFavoritesContext } from "../../hooks/useFavoritesContext";
-
-interface GameListProps {
-  games: Game[];
-  error: Error | null;
-}
+import { GameListProps } from "../../interfaces/interfaces";
 
 const GameList = ({ games, error }: GameListProps) => {
   const { favorites } = useFavoritesContext();

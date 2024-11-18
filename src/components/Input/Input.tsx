@@ -1,13 +1,4 @@
-import React from "react";
-
-interface InputProps {
-  type: string;
-  value: string;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (e: React.ChangeEvent<HTMLInputElement>) => void;
-  placeholder: string;
-  name: string;
-}
+import { InputProps } from "../../interfaces/interfaces";
 
 export const Input = ({
   type,

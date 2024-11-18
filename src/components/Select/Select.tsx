@@ -1,18 +1,5 @@
-import React from "react";
-
-interface Option {
-  label: string;
-  value: string;
-}
-
-interface SelectProps {
-  label: string;
-  value: string;
-  // eslint-disable-next-line no-unused-vars
-  onChange: (e: React.ChangeEvent<HTMLSelectElement>) => void;
-  options: Option[];
-  name: string;
-}
+import { Option } from "../../interfaces/interfaces";
+import { SelectProps } from "../../interfaces/interfaces";
 
 export const Select = ({
   label,
