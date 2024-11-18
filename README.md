@@ -59,4 +59,4 @@ http://localhost:5173/
 
 - Implement additional sorting and filtering options.
 - Integrate user accounts for persistent favorite lists.
-- Something I don't yet know about: I am open to exploring and adding new features or technologies as I continue to learn and develop my skills.
+- I am open to exploring and adding new features or technologies as I continue to learn and develop my skills.
