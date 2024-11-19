@@ -9,6 +9,7 @@ export const Input = ({
 }: InputProps) => {
   return (
     <input
+      className="m-4 p-4 bg-cardBg border-accentSilver border rounded"
       type={type}
       value={value}
       onChange={onChange}

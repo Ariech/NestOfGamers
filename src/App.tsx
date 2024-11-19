@@ -10,12 +10,14 @@ import { Input } from "./components/Input/Input";
 import { FavoritesProvider } from "./contexts/favoritesContext";
 import FavoritesList from "./components/FavoritesList/FavoritesList";
 import { orderingOptions, genreOptions } from "./utils/options";
+import { Modal } from "./components/Modal/Modal";
 
 function App() {
   const [currentPage, setCurrentPage] = useState<number>(1);
   const [ordering, setOrdering] = useState<string>("added");
   const [genre, setGenre] = useState<string>("");
   const [searchValue, setSearchValue] = useState<string>("");
+  const [isModalOpen, setModalOpen] = useState(false);
 
   const debouncedSearchValue = useDebounce(searchValue, 300);
 
@@ -41,6 +43,13 @@ function App() {
     setOrdering("added");
   };
 
+  const handleResetFilters = () => {
+    setSearchValue("");
+    setOrdering("added");
+    setGenre("");
+    setCurrentPage(1);
+  };
+
   if (isLoading) {
     return (
       <div className="flex items-center justify-center min-h-screen">
@@ -58,29 +67,45 @@ function App() {
           <p className="text-red-500">Error: {error.message}</p>
         ) : (
           <>
-            <Input
-              type={"text"}
-              value={searchValue}
-              onChange={handleSearchChange}
-              placeholder={"Search game"}
-              name={"searchValue"}
-            />
+            <div className="flex justify-end mx-16 pt-8">
+              {" "}
+              <button
+                onClick={() => setModalOpen(true)}
+                className="bg-highlight text-textPrimary px-8 py-3 rounded hover:bg-shadowDark"
+              >
+                Filter Games
+              </button>
+            </div>
 
-            <Select
-              label={"Order by"}
-              value={ordering}
-              onChange={handleSelectChange(setOrdering)}
-              options={orderingOptions}
-              name={"selectedOrdering"}
-            />
+            <Modal
+              isOpen={isModalOpen}
+              onClose={() => setModalOpen(false)}
+              onReset={handleResetFilters}
+            >
+              <Input
+                type={"text"}
+                value={searchValue}
+                onChange={handleSearchChange}
+                placeholder={"Search game name"}
+                name={"searchValue"}
+              />
 
-            <Select
-              label={"Genre"}
-              value={genre}
-              onChange={handleSelectChange(setGenre)}
-              options={genreOptions}
-              name={"selectedGenre"}
-            />
+              <Select
+                label={"Order by"}
+                value={ordering}
+                onChange={handleSelectChange(setOrdering)}
+                options={orderingOptions}
+                name={"selectedOrdering"}
+              />
+
+              <Select
+                label={"Genre"}
+                value={genre}
+                onChange={handleSelectChange(setGenre)}
+                options={genreOptions}
+                name={"selectedGenre"}
+              />
+            </Modal>
             <GameList
               games={gamesData ? gamesData.results : []}
               error={error}

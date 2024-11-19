@@ -23,35 +23,45 @@ export const Pagination = ({
 
   return (
     <div className="flex justify-center items-center space-x-4">
-      {hasPreviousPage && (
+      {
         <button
           onClick={() =>
             setCurrentPage((prev: number) => Math.max(prev - 1, 1))
           }
           aria-label="Previous Page"
+          disabled={!hasPreviousPage}
         >
           <img
             src="/assets/arrow-sm-left-svgrepo-com.svg"
             alt="Previous page"
-            className="w-24 h-24 filter invert hover:opacity-80"
+            className={`w-24 h-24 filter invert ${
+              hasPreviousPage
+                ? "opacity-100 hover:opacity-80"
+                : "opacity-50 cursor-not-allowed"
+            }`}
           />
         </button>
-      )}
+      }
 
       <span className="text-xl font-bold">{currentPage}</span>
 
-      {hasNextPage && (
+      {
         <button
           onClick={() => setCurrentPage((prev: number) => prev + 1)}
           aria-label="Next Page"
+          disabled={!hasNextPage}
         >
           <img
             src="/assets/arrow-sm-right-svgrepo-com.svg"
-            alt="Previous page"
-            className="w-24 h-24 filter invert hover:opacity-80"
+            alt="Next page"
+            className={`w-24 h-24 filter invert ${
+              hasNextPage
+                ? "opacity-100 hover:opacity-80"
+                : "opacity-50 cursor-not-allowed"
+            }`}
           />
         </button>
-      )}
+      }
     </div>
   );
 };

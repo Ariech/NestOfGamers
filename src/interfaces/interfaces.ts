@@ -49,3 +49,10 @@ export interface SelectProps {
   options: Option[];
   name: string;
 }
+
+export interface ModalProps {
+  isOpen: boolean;
+  onClose: () => void;
+  children: React.ReactNode;
+  onReset: () => void;
+}

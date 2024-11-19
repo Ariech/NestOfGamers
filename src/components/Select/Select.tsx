@@ -9,9 +9,14 @@ export const Select = ({
   name,
 }: SelectProps) => {
   return (
-    <label>
+    <label className="flex flex-col m-4">
       {label}:{" "}
-      <select name={name} value={value} onChange={onChange}>
+      <select
+        className="p-4 bg-cardBg border-accentSilver border rounded"
+        name={name}
+        value={value}
+        onChange={onChange}
+      >
         {options.map((option: Option) => (
           <option key={option.value} value={option.value}>
             {option.label}
