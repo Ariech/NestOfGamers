@@ -1,8 +1,7 @@
-import React from "react";
 import GameCard from "../GameCard/GameCard";
 import { useFavoritesContext } from "../../hooks/useFavoritesContext";
 
-const FavoritesList: React.FC = () => {
+const FavoritesList = () => {
   const { favorites } = useFavoritesContext();
 
   return (

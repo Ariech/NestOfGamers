@@ -11,7 +11,7 @@ export const genreOptions = [
   { label: "Action", value: "action" },
   { label: "Indie", value: "indie" },
   { label: "Adventure", value: "adventure" },
-  { label: "RPG", value: "rpg" },
+  { label: "RPG", value: "role-playing-games-rpg" },
   { label: "Strategy", value: "strategy" },
   { label: "Shooter", value: "shooter" },
   { label: "Casual", value: "casual" },

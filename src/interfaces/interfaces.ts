@@ -56,3 +56,15 @@ export interface ModalProps {
   children: React.ReactNode;
   onReset: () => void;
 }
+
+export interface FavoritesContextProps {
+  favorites: Game[];
+  // eslint-disable-next-line no-unused-vars
+  addToFavorites: (game: Game) => void;
+  // eslint-disable-next-line no-unused-vars
+  removeFromFavorites: (gameId: number) => void;
+}
+
+export interface FavoritesProviderProps {
+  children: React.ReactNode;
+}

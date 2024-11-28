@@ -1,22 +1,15 @@
 import React, { createContext } from "react";
-import { Game } from "../interfaces/interfaces";
 import { useFavorites } from "../hooks/useFavorites";
-
-interface FavoritesContextProps {
-  favorites: Game[];
-  // eslint-disable-next-line no-unused-vars
-  addToFavorites: (game: Game) => void;
-  // eslint-disable-next-line no-unused-vars
-  removeFromFavorites: (gameId: number) => void;
-}
+import {
+  FavoritesContextProps,
+  FavoritesProviderProps,
+} from "../interfaces/interfaces";
 
 export const FavoritesContext = createContext<
   FavoritesContextProps | undefined
 >(undefined);
 
-export const FavoritesProvider: React.FC<{ children: React.ReactNode }> = ({
-  children,
-}) => {
+export const FavoritesProvider = ({ children }: FavoritesProviderProps) => {
   const { favorites, addToFavorites, removeFromFavorites } = useFavorites();
 
   return (
