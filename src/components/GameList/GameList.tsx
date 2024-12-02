@@ -10,7 +10,7 @@ const GameList = ({ games, error }: GameListProps) => {
   }
 
   return (
-    <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-16 mx-16 my-8 ">
+    <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-16 px-16 py-8 ">
       {games.map((game) => (
         <GameCard
           key={game.id}

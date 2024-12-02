@@ -5,9 +5,9 @@ const FavoritesList = () => {
   const { favorites } = useFavoritesContext();
 
   return (
-    <div>
+    <div className="min-h-dvh">
       <h2>Favorite Games</h2>
-      <div className="grid grid-cols-4 gap-16 mx-16 mt-16">
+      <div className="grid lg:grid-cols-4 md:grid-cols-2 sm:grid-cols-1 gap-16 px-16 pt-8 pb-4">
         {favorites.length > 0 ? (
           favorites.map((game) => (
             <GameCard key={game.id} gameData={game} isFavorite={true} />

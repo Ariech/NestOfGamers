@@ -7,8 +7,6 @@ import { useGames } from "./hooks/useGames";
 import { useDebounce } from "./hooks/useDebounce";
 import { Select } from "./components/Select/Select";
 import { Input } from "./components/Input/Input";
-import { FavoritesProvider } from "./contexts/favoritesContext";
-import FavoritesList from "./components/FavoritesList/FavoritesList";
 import { orderingOptions, genreOptions } from "./utils/options";
 import { Modal } from "./components/Modal/Modal";
 
@@ -59,67 +57,61 @@ function App() {
   }
 
   return (
-    <FavoritesProvider>
-      <div
-        className={`min-h-dvh text-textPrimary ${error ? "flex items-center justify-center" : ""}`}
-      >
-        {error ? (
-          <p className="text-red-500">Error: {error.message}</p>
-        ) : (
-          <>
-            <div className="flex justify-end mx-16 pt-8">
-              {" "}
-              <button
-                onClick={() => setModalOpen(true)}
-                className="bg-highlight text-textPrimary px-8 py-3 rounded hover:bg-shadowDark"
-              >
-                Filter Games
-              </button>
-            </div>
-
-            <Modal
-              isOpen={isModalOpen}
-              onClose={() => setModalOpen(false)}
-              onReset={handleResetFilters}
+    <div
+      className={`min-h-dvh text-textPrimary ${error ? "flex items-center justify-center" : ""}`}
+    >
+      {error ? (
+        <p className="text-red-500">Error: {error.message}</p>
+      ) : (
+        <>
+          <div className="flex justify-end mx-16 pt-8">
+            {" "}
+            <button
+              onClick={() => setModalOpen(true)}
+              className="bg-highlight text-textPrimary px-8 py-3 rounded hover:bg-shadowDark"
             >
-              <Input
-                type={"text"}
-                value={searchValue}
-                onChange={handleSearchChange}
-                placeholder={"Search game name"}
-                name={"searchValue"}
-              />
+              Filter Games
+            </button>
+          </div>
 
-              <Select
-                label={"Order by"}
-                value={ordering}
-                onChange={handleSelectChange(setOrdering)}
-                options={orderingOptions}
-                name={"selectedOrdering"}
-              />
+          <Modal
+            isOpen={isModalOpen}
+            onClose={() => setModalOpen(false)}
+            onReset={handleResetFilters}
+          >
+            <Input
+              type={"text"}
+              value={searchValue}
+              onChange={handleSearchChange}
+              placeholder={"Search game name"}
+              name={"searchValue"}
+            />
 
-              <Select
-                label={"Genre"}
-                value={genre}
-                onChange={handleSelectChange(setGenre)}
-                options={genreOptions}
-                name={"selectedGenre"}
-              />
-            </Modal>
-            <GameList
-              games={gamesData ? gamesData.results : []}
-              error={error}
+            <Select
+              label={"Order by"}
+              value={ordering}
+              onChange={handleSelectChange(setOrdering)}
+              options={orderingOptions}
+              name={"selectedOrdering"}
             />
-            <Pagination
-              currentPage={currentPage}
-              setCurrentPage={setCurrentPage}
-              gamesData={gamesData}
+
+            <Select
+              label={"Genre"}
+              value={genre}
+              onChange={handleSelectChange(setGenre)}
+              options={genreOptions}
+              name={"selectedGenre"}
             />
-            <FavoritesList />
-          </>
-        )}
-      </div>
-    </FavoritesProvider>
+          </Modal>
+          <GameList games={gamesData ? gamesData.results : []} error={error} />
+          <Pagination
+            currentPage={currentPage}
+            setCurrentPage={setCurrentPage}
+            gamesData={gamesData}
+          />
+        </>
+      )}
+    </div>
   );
 }
 
